@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentinel - The AI Security Guard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <style>
+        :root {
+            --primary-bg: #080808; /* Very dark background */
+            --secondary-bg: #1c1c1c; /* Dark gray for sections/cards */
+            --text-primary: #e0e0e0; /* Light gray text */
+            --text-secondary: #a0a0a0; /* Medium gray text */
+            --accent-color: #00ffff; /* Cyan/Tron-like accent */
+            --border-color: #333333; /* Darker gray borders */
+            --gradient-border: linear-gradient(90deg, rgba(0,255,255,0.5) 0%, rgba(0,184,255,0.5) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow: hidden; /* Force single page fit */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem; /* Reduced padding */
+             height: 100vh; /* Container takes full viewport height */
+             display: flex;
+             flex-direction: column;
+             justify-content: space-between; /* Distribute space */
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1.8rem 2rem; /* Increased padding for centering */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.98); /* Almost opaque */
+            backdrop-filter: blur(8px); /* Slightly more blur */
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem; /* Reduced from 2.2rem */
+            font-weight: 700;
+            color: #ffffff; /* Explicitly white */
+            text-decoration: none;
+             /* Removed padding/margin adjustments here, rely on flexbox */
+             opacity: 0;
+             animation: fadeIn 1s ease forwards 0.2s;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1.5rem; /* Increased gap */
+             /* Removed margin-right here */
+        }
+
+        .nav-button {
+            padding: 0.7rem 1.6rem; /* Reduced from 0.9rem 1.8rem */
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.9rem; /* Reduced from 1rem */
+             opacity: 0;
+             animation: slideInRight 1s ease forwards 0.4s;
+        }
+
+        .nav-button:hover {
+            background: var(--accent-color);
+            color: var(--primary-bg);
+            border-color: var(--accent-color);
+        }
+
+        .section {
+            padding: 0.6rem 0; /* Padding between sections */
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+         .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero {
+            flex-grow: 1; /* Allow hero to take up available space */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding-top: 220px; /* Further increased padding top for fixed nav */
+             padding-bottom: 100px; /* Increased padding bottom */
+        }
+
+        .hero-content {
+            max-width: 900px; /* Max width */
+            position: relative;
+            z-index: 2;
+             animation: scaleIn 1s ease forwards;
+        }
+
+        .tagline {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8rem; /* Reduced from 3rem */
+            font-weight: 700;
+            margin-bottom: 1.8rem; /* Increased from 0.4rem for more space */
+            line-height: 1.1;
+            color: var(--accent-color);
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+            opacity: 0;
+            animation: slideInUp 1s ease forwards 0.6s;
+        }
+
+        .subtagline {
+            font-size: 1.3rem; /* Reduced from 1.4rem */
+            color: var(--text-secondary);
+            margin-bottom: 1rem; /* Reduced from 1.2rem */
+            min-height: 1.5em; /* Reduced from 1.6em */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            animation: slideInUp 1s ease forwards 0.8s;
+            font-style: italic; /* Added italic style */
+        }
+
+         #animated-text {
+            display: inline-block;
+            min-width: 100px; /* Reduced from 180px for closer text */
+             font-weight: 700;
+             color: var(--accent-color);
+             text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+             margin: 0; /* Removed margin for closer text */
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 0.7rem 1.8rem; /* Reduced from 0.8rem 2rem */
+            background: var(--accent-color);
+            color: var(--primary-bg);
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-size: 0.95rem; /* Reduced from 1rem */
+            margin-top: 0.8rem; /* Reduced from 1rem */
+            opacity: 0;
+            animation: slideInUp 1s ease forwards 1s;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+             background: #00ffff; /* Ensure consistent color on hover */
+             color: #000; /* Ensure consistent color on hover */
+        }
+
+        .story-content,
+        .vision-content {
+            max-width: 520px; /* Reduced from 550px */
+            margin: 0 auto;
+            font-size: 0.8rem; /* Reduced from 0.85rem */
+            color: var(--text-secondary);
+            line-height: 1.3; /* Reduced from 1.4 */
+            text-align: left;
+        }
+
+        .story-paragraph {
+            margin-bottom: 0.5rem; /* Reduced from 0.6rem */
+        }
+
+        .story-content h2,
+        .vision-content h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem; /* Reduced from 1.2rem */
+            font-weight: 700;
+            margin-bottom: 0.7rem; /* Reduced from 0.8rem */
+            color: var(--text-primary);
+            text-align: center;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+        }
+
+        .vision-grid {
+            display: grid; /* Restored grid display */
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Restored grid columns */
+            gap: 0.5rem; /* Restored grid gap */
+            margin-top: 0.7rem; /* Restored margin */
+        }
+
+        .vision-item {
+            padding: 0.5rem; /* Restored padding */
+            border: 1px solid var(--border-color); /* Restored border */
+            border-radius: 6px; /* Restored border-radius */
+            background-color: var(--secondary-bg); /* Restored default background */
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; /* Restored transition */
+            position: relative; /* Restored position */
+            overflow: hidden; /* Restored overflow */
+        }
+
+        /* Restored specific styling for the Legacy Systems item */
+        .vision-grid .vision-item:first-child {
+            background-color: #280808; /* Slightly different dark shade */
+            border-color: #550000; /* Reddish border for contrast/warning */
+             /* Ensure no extra margin from previous attempts */
+             margin-right: 0; 
+             margin-left: 0;
+             margin-top: 0;
+        }
+
+        /* Restored and adjusted margins for other items in grid */
+         .vision-grid .vision-item:not(:first-child) {
+             margin-left: 0; /* Removed extra left margin */
+             margin-top: 0; /* Removed extra top margin */
+         }
+
+        .vision-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--gradient-border);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.6s ease;
+        }
+
+        .vision-item:hover {
+             transform: translateY(-5px) scale(1.02);
+             border-color: var(--accent-color);
+             box-shadow: 0 8px 25px rgba(0, 255, 255, 0.2);
+        }
+
+        .vision-item:hover::before {
+             transform: scaleX(1);
+         }
+
+        .vision-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem; /* Reduced from 0.85rem */
+            font-weight: 600;
+            margin-bottom: 0.2rem; /* Reduced from 0.3rem */
+            color: var(--accent-color);
+        }
+
+        .vision-description {
+            color: var(--text-secondary);
+            font-size: 0.7rem; /* Reduced from 0.75rem */
+        }
+
+        .highlight {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+         @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 1.2rem; /* Reduced from 1.2rem 1.5rem */
+            }
+             .logo {
+                font-size: 1.6rem; /* Reduced from 1.8rem */
+            }
+            .nav-button {
+                 padding: 0.6rem 1.2rem; /* Reduced from 0.7rem 1.4rem */
+                 font-size: 0.9rem; /* Kept same size */
+            }
+            .tagline {
+                font-size: 2rem; /* Reduced from 2.2rem */
+                margin-bottom: 0.5rem; /* Increased from 0.3rem */
+            }
+            
+            .subtagline {
+                font-size: 1.1rem; /* Reduced from 1.2rem */
+                 min-height: 1.5em; /* Reduced from 1.6em */
+            }
+
+            .cta-button {
+                padding: 0.7rem 1.6rem; /* Reduced from 0.8rem 1.8rem */
+                font-size: 0.95rem; /* Reduced from 1rem */
+                 margin-top: 1.2rem; /* Reduced from 1.5rem */
+            }
+
+            .section {
+                padding: 1rem 0;
+            }
+
+            .story-content, .vision-content {
+                font-size: 0.8rem; /* Kept same size */
+            }
+
+             .story-content h2,
+             .vision-content h2 {
+                font-size: 1.1rem; /* Kept same size */
+            }
+
+            .vision-grid {
+                gap: 0.5rem; /* Reduced from 0.8rem */
+            }
+
+            .vision-item {
+                padding: 0.5rem; /* Reduced from 0.8rem */
+            }
+             .vision-title {
+                font-size: 0.8rem; /* Kept same size */
+            }
+             .vision-description {
+                font-size: 0.7rem; /* Reduced from 0.8rem */
+            }
+        }
+
+         @media (max-width: 480px) {
+              nav {
+                 padding: 0.5rem 0.6rem; /* Reduced from 0.6rem 0.8rem */
+            }
+             .logo {
+                font-size: 1.3rem; /* Reduced from 1.4rem */
+            }
+             .nav-button {
+                padding: 0.3rem 0.6rem; /* Reduced from 0.4rem 0.8rem */
+                font-size: 0.7rem; /* Reduced from 0.8rem */
+            }
+             .tagline {
+                font-size: 1.6rem; /* Reduced from 1.8rem */
+                margin-bottom: 0.3rem; /* Increased from 0.2rem */
+            }
+            .subtagline {
+                font-size: 0.9rem; /* Reduced from 1rem */
+                 min-height: 1.3em; /* Reduced from 1.4em */
+            }
+             .cta-button {
+                padding: 0.5rem 1rem; /* Reduced from 0.6rem 1.2rem */
+                font-size: 0.8rem; /* Reduced from 0.9rem */
+                 margin-top: 1rem; /* Reduced from 1.2rem */
+            }
+             .section {
+                padding: 0.5rem 0; /* Reduced from 0.6rem 0 */
+            }
+             .story-content, .vision-content {
+                 font-size: 0.75rem; /* Reduced from 0.8rem */
+             }
+             .story-content h2,
+             .vision-content h2 {
+                 font-size: 1rem; /* Reduced from 1.1rem */
+             }
+             .vision-item {
+                 padding: 0.4rem; /* Reduced from 0.5rem */
+             }
+              .vision-title {
+                 font-size: 0.75rem; /* Reduced from 0.8rem */
+             }
+              .vision-description {
+                 font-size: 0.65rem; /* Reduced from 0.7rem */
+             }
+         }
+
+        /* Styles for feature animation areas */
+        .feature-animation-left,
+        .feature-animation-right {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 180px; /* Reduced from 200px */
+            height: 350px; /* Reduced from 400px */
+            z-index: 5;
+            pointer-events: none; /* Allow clicks to pass through */
+            opacity: 0.3; /* Subtle */
+        }
+
+        .feature-animation-left {
+            left: 15px; /* Reduced from 20px */
+        }
+
+        .feature-animation-right {
+            right: 15px; /* Reduced from 20px */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="/" class="logo">
+                SENTINEL
+            </a>
+            <div class="nav-buttons">
+                <a href="https://joinsentinel.com" class="nav-button">Login</a>
+                <a href="https://joinsentinel.com" class="nav-button">Sign Up</a>
+            </div>
+        </nav>
+
+        <section class="hero section">
+            <div class="hero-content">
+                <h1 class="tagline">The last piece of physical security any organization will ever need</h1>
+                <p class="subtagline">AI that <span id="animated-text"></span> from inside your security camera</p>
+                <p class="subtagline" style="font-size: 0.8rem; margin-top: 0.4rem; font-style: normal; color: var(--text-secondary);">Deployed across 15+ homes, schools, garages, restaurants, and convenience stores.</p>
+                <a href="https://calendly.com/rayan-dabbagh/sentinel-demo" class="cta-button">Book a Demo</a>
+                <p class="waitlist-text" style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.5rem;">Limited spots: partnering exclusively with the first 20 entities. Join the waitlist today.</p>
+            </div>
+        </section>
+
+        <section class="vision-section section">
+             <div class="vision-content">
+                 <h2>Sentinel vs. Legacy Security Systems</h2>
+                 <div class="vision-grid">
+                     <div class="vision-item">
+                         <h3 class="vision-title">Legacy Systems</h3>
+                         <p class="vision-description">Cameras just record.<br>Human monitoring is costly & flawed.<br>Reactive; waits for incidents to happen!<br><span class="highlight">Most footage goes unwatched.</span></p>
+                     </div>
+                     <div class="vision-item">
+                         <h3 class="vision-title">Sentinel AI Guard</h3>
+                         <p class="vision-description">AI that sees, reasons, & acts 24/7.<br>Autonomous, tireless, cost-effective.<br>Proactive; prevents harm.<br><span class="highlight">True real-time intelligence</span>; AI can finally reason about videos like a human.</p>
+                     </div>
+                     <div class="vision-item">
+                         <h3 class="vision-title">Natural Interaction</h3>
+                         <p class="vision-description">Describe any situation in plain English<br>Get alerts via SMS, Slack, or live phone calls.<br>Sentinel can compile reports on events.<br><span class="highlight">Chat with Sentinel like a human guard.</span></p>
+                     </div>
+                     <div class="vision-item">
+                         <h3 class="vision-title">Fast Search & Integration</h3>
+                         <p class="vision-description">Search footage by simply asking.<br>Surface events in seconds, not hours.<br>Plugs into <span class="highlight">existing cameras</span>.<br>Works <span class="highlight">cloud or on-prem</span>.</p>
+                     </div>
+                 </div>
+             </div>
+         </section>
+
+        <section class="story-section section">
+             <div class="story-content">
+                 <h2>Why We Built Sentinel</h2>
+                 <p class="story-paragraph">We left our home countries seeking safety. Everyone said America was secure, predictable.</p>
+
+                 <p class="story-paragraph">But reality was harsh.</p>
+
+                 <p class="story-paragraph">Active shooter drills became routine. Homes robbed weekly. Walking at night felt unsafe.</p>
+
+                 <p class="story-paragraph">Legacy systems watched passively, reacting only after harm occurred. Today's world is too complex and dynamic for legcay systems to actually make a difference.</p>
+
+                 <p class="story-paragraph">Then, the latest AI models changed everything.</p>
+
+                 <p class="story-paragraph">For the first time, models could understand video contextually like a human security guard, but faster, smarter, and at scale.</p>
+
+                 <p class="story-paragraph">We built Sentinel: the world's first AI guard you can talk to, embedded directly into your security cameras.</p>
+
+                 <p class="story-paragraph">Sentinel sees, reasons, and most importantly, acts because real safety isn't about reacting, it's about preventing harm.</p>                
+             </div>            
+         </section>
+
+    </div>
+
+    <script>
+        const textElement = document.getElementById('animated-text');
+        const textOptions = ["sees", "reasons", "acts"];
+        let currentIndex = 0;
+
+        function animateText() {
+            textElement.style.opacity = 0;
+            setTimeout(() => {
+                textElement.textContent = `${textOptions[currentIndex]}`;
+                textElement.style.opacity = 1;
+                currentIndex = (currentIndex + 1) % textOptions.length;
+            }, 500); // Fade out duration
+        }
+
+        // Initial text setup
+        textElement.textContent = `${textOptions[currentIndex]}`;
+        currentIndex = (currentIndex + 1) % textOptions.length;
+
+        setInterval(animateText, 3000); // Cycle every 3 seconds
+
+        // Section visibility observer (if single screen fails, this adds animation on minimal scroll)
+        const sections = document.querySelectorAll('.section');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Optionally unobserve if you only want the animation once
+                    // observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.05 // Trigger when 5% of the section is visible
+        });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html> 

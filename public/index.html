@@ -10,13 +10,13 @@
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <style>
         :root {
-            --primary-bg: #080808; /* Very dark background */
-            --secondary-bg: #1c1c1c; /* Dark gray for sections/cards */
-            --text-primary: #e0e0e0; /* Light gray text */
-            --text-secondary: #a0a0a0; /* Medium gray text */
-            --accent-color: #00ffff; /* Cyan/Tron-like accent */
-            --border-color: #333333; /* Darker gray borders */
-            --gradient-border: linear-gradient(90deg, rgba(0,255,255,0.5) 0%, rgba(0,184,255,0.5) 100%);
+            --primary-bg: #020817; /* Updated to match dashboard background */
+            --secondary-bg: #0b1424; /* Darker blue for sections/cards */
+            --text-primary: #ffffff; /* Pure white text */
+            --text-secondary: #b0b0b0; /* Lighter gray for secondary text */
+            --accent-color: #0a6ed1; /* Blue accent color from dashboard */
+            --border-color: #1f2f4b; /* Dark blue border */
+            --gradient-border: linear-gradient(90deg, rgba(10, 110, 209, 0.5) 0%, rgba(0, 184, 255, 0.5) 100%); /* Adjusted gradient */
         }
 
         * {
@@ -34,9 +34,9 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1600px; /* Increased max-width further for wider layout */
             margin: 0 auto;
-            padding: 0 1rem; /* Reduced padding */
+            padding: 0 1rem;
              height: 100vh; /* Container takes full viewport height */
              display: flex;
              flex-direction: column;
@@ -48,13 +48,13 @@
             top: 0;
             left: 0;
             right: 0;
-            padding: 1.8rem 2rem; /* Increased padding for centering */
+            padding: 1.8rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            background: rgba(0, 0, 0, 0.98); /* Almost opaque */
-            backdrop-filter: blur(8px); /* Slightly more blur */
+            background: rgba(2, 8, 23, 0.98); /* Use primary-bg with opacity */
+            backdrop-filter: blur(8px);
         }
 
         .logo {
@@ -75,21 +75,21 @@
         }
 
         .nav-button {
-            padding: 0.7rem 1.6rem; /* Reduced from 0.9rem 1.8rem */
+            padding: 0.7rem 1.6rem;
             border: 1px solid var(--border-color);
             border-radius: 4px;
             color: var(--text-primary);
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s ease;
-            font-size: 0.9rem; /* Reduced from 1rem */
+            font-size: 0.9rem;
              opacity: 0;
              animation: slideInRight 1s ease forwards 0.4s;
         }
 
         .nav-button:hover {
             background: var(--accent-color);
-            color: var(--primary-bg);
+            color: var(--primary-bg); /* Hover text is the dark blue background */
             border-color: var(--accent-color);
         }
 
@@ -126,12 +126,12 @@
 
         .tagline {
             font-family: 'Orbitron', sans-serif;
-            font-size: 2.8rem; /* Reduced from 3rem */
+            font-size: 2.8rem;
             font-weight: 700;
-            margin-bottom: 1.8rem; /* Increased from 0.4rem for more space */
+            margin-bottom: 1.8rem;
             line-height: 1.1;
             color: var(--accent-color);
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+            text-shadow: 0 0 10px rgba(10, 110, 209, 0.5); /* Adjusted shadow color */
             opacity: 0;
             animation: slideInUp 1s ease forwards 0.6s;
         }
@@ -168,7 +168,7 @@
             border-radius: 4px;
             transition: all 0.3s ease;
             font-size: 0.95rem; /* Reduced from 1rem */
-            margin-top: 0.8rem; /* Reduced from 1rem */
+            margin-top: 0.6rem; /* Reduced from 1rem */
             margin-bottom: 1rem;
             opacity: 0;
             animation: slideInUp 1s ease forwards 1s;
@@ -176,16 +176,16 @@
 
         .cta-button:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
-             background: #00ffff; /* Ensure consistent color on hover */
-             color: #000; /* Ensure consistent color on hover */
+            box-shadow: 0 0 20px rgba(10, 110, 209, 0.6); /* Adjusted shadow color */
+             background: var(--accent-color); /* Use the new accent blue */
+             color: var(--primary-bg);
         }
 
         .story-content,
         .vision-content {
             max-width: 520px; /* Reduced from 550px */
             margin: 0 auto;
-            margin-top: 0.7rem; /* Added margin-top */
+            margin-top: 0.3rem; /* Added margin-top */
             font-size: 0.8rem; /* Reduced from 0.85rem */
             color: var(--text-secondary);
             line-height: 1.3; /* Reduced from 1.4 */
@@ -199,12 +199,12 @@
         .story-content h2,
         .vision-content h2 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem; /* Reduced from 1.2rem */
+            font-size: 1.1rem;
             font-weight: 700;
-            margin-bottom: 0.7rem; /* Reduced from 0.8rem */
+            margin-bottom: 0.7rem;
             color: var(--text-primary);
             text-align: center;
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.4); /* Adjusted shadow for white text */
         }
 
         .vision-grid {
@@ -224,22 +224,6 @@
             overflow: hidden; /* Restored overflow */
         }
 
-        /* Restored specific styling for the Legacy Systems item */
-        .vision-grid .vision-item:first-child {
-            background-color: #280808; /* Slightly different dark shade */
-            border-color: #550000; /* Reddish border for contrast/warning */
-             /* Ensure no extra margin from previous attempts */
-             margin-right: 0; 
-             margin-left: 0;
-             margin-top: 0;
-        }
-
-        /* Restored and adjusted margins for other items in grid */
-         .vision-grid .vision-item:not(:first-child) {
-             margin-left: 0; /* Removed extra left margin */
-             margin-top: 0; /* Removed extra top margin */
-         }
-
         .vision-item::before {
             content: '';
             position: absolute;
@@ -256,7 +240,16 @@
         .vision-item:hover {
              transform: translateY(-5px) scale(1.02);
              border-color: var(--accent-color);
-             box-shadow: 0 8px 25px rgba(0, 255, 255, 0.2);
+             box-shadow: 0 8px 25px rgba(10, 110, 209, 0.3);
+             background-color: #131a2b;
+        }
+
+        /* Style for Legacy Systems item on hover to keep the outdated look */
+        .vision-grid .vision-item:first-child:hover {
+             border-color: #444; /* Keep the dashed border color on hover */
+             box-shadow: 0 8px 25px rgba(68, 68, 68, 0.2); /* Muted gray shadow on hover */
+             background-color: #0b1424; /* Keep the base background color on hover */
+             background-image: linear-gradient(45deg, rgba(255,255,255,0.08) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.08) 75%, rgba(255,255,255,0.08) 100%); /* Slightly more visible pattern on hover */
         }
 
         .vision-item:hover::before {
@@ -265,19 +258,19 @@
 
         .vision-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.8rem; /* Reduced from 0.85rem */
+            font-size: 0.8rem;
             font-weight: 600;
-            margin-bottom: 0.2rem; /* Reduced from 0.3rem */
-            color: var(--accent-color);
+            margin-bottom: 0.2rem;
+            color: var(--accent-color); /* Use the new accent blue for titles */
         }
 
         .vision-description {
             color: var(--text-secondary);
-            font-size: 0.7rem; /* Reduced from 0.75rem */
+            font-size: 0.7rem;
         }
 
         .highlight {
-            color: var(--text-primary);
+            color: var(--text-primary); /* Highlight is now white */
             font-weight: 700;
         }
 
@@ -409,11 +402,11 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 180px; /* Reduced from 200px */
-            height: 350px; /* Reduced from 400px */
+            width: 180px;
+            height: 350px;
             z-index: 5;
-            pointer-events: none; /* Allow clicks to pass through */
-            opacity: 0.3; /* Subtle */
+            pointer-events: none;
+            opacity: 0.2; /* Reduced opacity */
         }
 
         .feature-animation-left {
@@ -429,7 +422,7 @@
     <div class="container">
         <nav>
             <a href="/" class="logo">
-                SENTINEL
+                <img src="logo.png" alt="Sentinel Logo" style="height: 75px; vertical-align: middle;">
             </a>
             <div class="nav-buttons">
                 <a href="https://joinsentinel.com" class="nav-button">Login</a>
@@ -452,7 +445,7 @@
                  <h2>Sentinel vs. Legacy Security Systems</h2>
                  <div class="vision-grid">
                      <div class="vision-item">
-                         <h3 class="vision-title">Legacy Systems</h3>
+                         <h3 class="vision-title">Legacy Systems ❌❌</h3>
                          <p class="vision-description">Cameras just record.<br>Human monitoring is costly & flawed.<br>Reactive; waits for incidents to happen!<br>Limited to predefined parameters (e.g. color).<br><span class="highlight">Most footage goes unwatched.</span></p>
                      </div>
                      <div class="vision-item">
